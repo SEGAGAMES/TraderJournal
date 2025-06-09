@@ -36,18 +36,14 @@ class Database
         }
     }
 
-    // Обновление поля host.
-    public function SetHost($newHost)
-    {
-        $this->host=$newHost;
-    }
-
     // Отправка запроса в базу данных.
-    public function SendQuery($query)
+    public function SendQuery($query, $paramsArray = [])
     {
         try 
         {
             $stmt = $this->conn->prepare($query);
+            for ($i = 0; $i < count($paramsArray); i++)
+                $stmt->bind_param($i, $paramsArray[$i]);
             $stmt->execute();
             return $stmt;
         }
