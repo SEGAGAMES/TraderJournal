@@ -1,32 +1,48 @@
 <?php
-ini_set('display_errors', 0);
+// Считывание одного элемента из roles.
 
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
+include_once("../config/database.php")
+header("Content-Type: application/json");
 
-include_once "../objects/stock.php";
+$db = new Database();
 
-$ticker = isset($_GET["ticker"]) ? $_GET["ticker"] : die();
-
-$stmt = Stock::ReadOne($ticker);
-$num = $stmt->rowCount();
-
-
-if ($num > 0) {
-    $stocks_arr = array();
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+// Проверка метода запроса.
+if ($_SERVER['REQUEST_METHOD'] === 'GET')
+{
+    // Проверка введенных данных.
+    if(!isset($_GET['ticker']))
     {
-        extract($row);
-        $stock_item = array(
-            "ticker" => $ticker,
-            "futures" => $futures,
-            "exchange" => $exchange,
-        );
-        array_push($stocks_arr, $stock_item);
+        http_response_code(400);
+        return null;
     }
+
+    $ticker = $_GET['ticker'];
+    $query = "SELECT * FROM stocks WHERE ticker = ?";
+
+    $result = $db->SendQuery($query, [$ticker]);
+
+    // Проверка на существование результата.
+    if (!$result)
+    {
+        http_response_code(503);
+        return null;
+    }
+    
+    // Проверка длины ответа.
+    if ($result->rowCount < 1)
+    {
+        http_response_code(404);
+        return null;
+    }
+
+    $result = $result->fetch(PDO::FETCH_ASSOC);
+
     http_response_code(200);
-    echo json_encode($stocks_arr);
+    echo json_encode($result);
 }
 else
-    http_response_code(404);
+{
+    http_response_code(405);
+    return null;
+}
 ?>

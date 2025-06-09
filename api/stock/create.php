@@ -1,23 +1,51 @@
 <?php
-session_start();
-ini_set('display_errors', 0);
+// Создавние новой роли в roles.
 
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
+include_once("../config/database.php")
+include_once("../config/helper.php")
+header("Content-Type: application/json");
 
-include_once "../objects/stock.php";
+$db = new Database();
 
-if ($_SESSION['priority'] <= 4)
+// Проверка метода запроса.
+if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
-	http_response_code(403);
-	die();
+    // Проверка на наличие пустых значений.
+    if (Helper::isNull($_POST['userPriority'], $_POST['priority'], $_POST['ticker'], $_POST['futures'], $_POST['exchange']))
+    {
+        http_response_code(400);
+        return null;
+    }
+
+    $userPriority = $_POST['userPriority'];
+    $priority = $_POST['priority'];
+    $ticker = $_POST['ticker'];
+    $futures = $_POST['futures'];
+    $exchange = $_POST['exchange'];
+
+    // Проверка прав пользователя.
+    if ($userPriority <= $priority)
+    {
+        http_response_code(403);
+        return null;
+    }
+
+    $query = "INSERT INTO stocks `ticker`, `futures`, `exchange` VALUES (?,?,?);";
+    $result = $db->SendQuery($query, [$ticker, $futures, $exchange]);
+
+    // Проверка на существование результата.
+    if (!$result)
+    {
+        http_response_code(503);
+        return null;
+    }
+    http_response_code(201);
+    return null;
+}
+else
+{
+    http_response_code(405);
+    return null;
 }
 
-$ticker = $_POST['ticker'] ?? null;
-$futures = $_POST['futures'] ?? 1;
-$exchange = $_POST['exchange'] ?? null;
-if (Stock::Create($ticker, $futures, $exchange))
-    http_response_code(201);
-else
-    http_response_code(503);
 ?>
