@@ -1,5 +1,5 @@
 <?php
-// Создавние новой роли в roles.
+// РЎРѕР·РґР°РІРЅРёРµ РЅРѕРІРѕР№ СЂРѕР»Рё РІ roles.
 
 include_once("../config/database.php")
 include_once("../config/helper.php")
@@ -7,10 +7,10 @@ header("Content-Type: application/json");
 
 $db = new Database();
 
-// Проверка метода запроса.
+// РџСЂРѕРІРµСЂРєР° РјРµС‚РѕРґР° Р·Р°РїСЂРѕСЃР°.
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
-    // Проверка на наличие пустых значений.
+    // РџСЂРѕРІРµСЂРєР° РЅР° РЅР°Р»РёС‡РёРµ РїСѓСЃС‚С‹С… Р·РЅР°С‡РµРЅРёР№.
     if (Helper::isNull($_POST['userPriority'], $_POST['role'], $_POST['priority']))
     {
         http_response_code(400);
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     $role = $_POST['role'];
     $priority = $_POST['priority'];
 
-    // Проверка прав пользователя.
+    // РџСЂРѕРІРµСЂРєР° РїСЂР°РІ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ.
     if ($userPriority <= $priority)
     {
         http_response_code(403);
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     $query = "INSERT INTO roles `role`, `priority` VALUES (?,?);";
     $result = $db->SendQuery($query, [$role, $priority]);
 
-    // Проверка на существование результата.
+    // РџСЂРѕРІРµСЂРєР° РЅР° СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ СЂРµР·СѓР»СЊС‚Р°С‚Р°.
     if (!$result)
     {
         http_response_code(503);

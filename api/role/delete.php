@@ -1,15 +1,15 @@
 <?php
-// Удаление элемента в roles.
+// РЈРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РІ roles.
 
 include_once("../config/database.php")
 header("Content-Type: application/json");
 
 $db = new Database();
 
-// Проверка метода запроса.
+// РџСЂРѕРІРµСЂРєР° РјРµС‚РѕРґР° Р·Р°РїСЂРѕСЃР°.
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
 {
-    // Проверка на наличие пустых значений.
+    // РџСЂРѕРІРµСЂРєР° РЅР° РЅР°Р»РёС‡РёРµ РїСѓСЃС‚С‹С… Р·РЅР°С‡РµРЅРёР№.
     if (Helper::isNull($_DELETE['role'], $_DELETE['userPriority'], $_DELETE['priority']))
     {
         http_response_code(400);
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
     $userPriority = $_DELETE['userPriority'];
     $priority = $_DELETE['priority'];
 
-    // Проверка прав пользователя.
+    // РџСЂРѕРІРµСЂРєР° РїСЂР°РІ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ.
     if ($userPriority <= $priority)
     {
         http_response_code(403);
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
     $query = "DELETE FROM roles WHERE `role` = ?;";
     $result = $db->SendQuery($query, [$role]);
 
-    // Проверка на существование результата.
+    // РџСЂРѕРІРµСЂРєР° РЅР° СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ СЂРµР·СѓР»СЊС‚Р°С‚Р°.
     if (!$result)
     {
         http_response_code(503);

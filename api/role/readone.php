@@ -1,15 +1,15 @@
 <?php
-// Ñ÷èòûâàíèå îäíîãî ýëåìåíòà èç roles.
+// Ð¡Ñ‡Ð¸Ñ‚Ñ‹Ð²Ð°Ð½Ð¸Ðµ Ð¾Ð´Ð½Ð¾Ð³Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð° Ð¸Ð· roles.
 
 include_once("../config/database.php")
 header("Content-Type: application/json");
 
 $db = new Database();
 
-// Ïðîâåðêà ìåòîäà çàïðîñà.
+// ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð¼ÐµÑ‚Ð¾Ð´Ð° Ð·Ð°Ð¿Ñ€Ð¾ÑÐ°.
 if ($_SERVER['REQUEST_METHOD'] === 'GET')
 {
-    // Ïðîâåðêà ââåäåííûõ äàííûõ.
+    // ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð²Ð²ÐµÐ´ÐµÐ½Ð½Ñ‹Ñ… Ð´Ð°Ð½Ð½Ñ‹Ñ….
     if(!isset($_GET['role']))
     {
         http_response_code(400);
@@ -21,14 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
 
     $result = $db->SendQuery($query, [$role]);
 
-    // Ïðîâåðêà íà ñóùåñòâîâàíèå ðåçóëüòàòà.
+    // ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð½Ð° ÑÑƒÑ‰ÐµÑÑ‚Ð²Ð¾Ð²Ð°Ð½Ð¸Ðµ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð°.
     if (!$result)
     {
         http_response_code(503);
         return null;
     }
     
-    // Ïðîâåðêà äëèíû îòâåòà.
+    // ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð´Ð»Ð¸Ð½Ñ‹ Ð¾Ñ‚Ð²ÐµÑ‚Ð°.
     if ($result->rowCount < 1)
     {
         http_response_code(404);

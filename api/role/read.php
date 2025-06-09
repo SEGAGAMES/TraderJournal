@@ -1,26 +1,26 @@
 <?php
-// Ñ÷èòûâàíèå âñåõ ýëåìåíòîâ èç roles.
+// Ð¡Ñ‡Ð¸Ñ‚Ñ‹Ð²Ð°Ð½Ð¸Ðµ Ð²ÑÐµÑ… ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð¸Ð· roles.
 
 include_once("../config/database.php")
 header("Content-Type: application/json");
 
 $db = new Database();
 
-// Ïðîâåðêà ìåòîäà çàïðîñà.
+// ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð¼ÐµÑ‚Ð¾Ð´Ð° Ð·Ð°Ð¿Ñ€Ð¾ÑÐ°.
 if ($_SERVER['REQUEST_METHOD'] === 'GET')
 {
     $query = "SELECT * FROM roles";
 
     $result = $db->SendQuery($query);
 
-    // Ïðîâåðêà íà ñóùåñòâîâàíèå ðåçóëüòàòà.
+    // ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð½Ð° ÑÑƒÑ‰ÐµÑÑ‚Ð²Ð¾Ð²Ð°Ð½Ð¸Ðµ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð°.
     if (!$result)
     {
         http_response_code(503);
         return null;
     }
     
-    // Ïðîâåðêà äëèíû îòâåòà.
+    // ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð´Ð»Ð¸Ð½Ñ‹ Ð¾Ñ‚Ð²ÐµÑ‚Ð°.
     if ($result->rowCount < 1)
     {
         http_response_code(404);
