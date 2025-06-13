@@ -1,16 +1,16 @@
 <?php
-// Создавние новой роли в roles.
+// РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ С‚РёРєРµСЂР° РІ stocks.
 
-include_once("../config/database.php")
-include_once("../config/helper.php")
+include_once("../config/database.php");
+include_once("../config/helper.php");
 header("Content-Type: application/json");
 
 $db = new Database();
 
-// Проверка метода запроса.
+// РџСЂРѕРІРµСЂРєР° РјРµС‚РѕРґР°.
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
-    // Проверка на наличие пустых значений.
+    // РџСЂРѕРІРµСЂРєР° РІРІРµРґРµРЅРЅС‹С… РїР°СЂР°РјРµС‚СЂРѕРІ.
     if (Helper::isNull($_POST['userPriority'], $_POST['priority'], $_POST['ticker'], $_POST['futures'], $_POST['exchange']))
     {
         http_response_code(400);
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     $futures = $_POST['futures'];
     $exchange = $_POST['exchange'];
 
-    // Проверка прав пользователя.
+    // РџСЂРѕРІРµСЂРєР° РїСЂР°РІ РґРѕСЃС‚СѓРїР°.
     if ($userPriority <= $priority)
     {
         http_response_code(403);
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     $query = "INSERT INTO stocks `ticker`, `futures`, `exchange` VALUES (?,?,?);";
     $result = $db->SendQuery($query, [$ticker, $futures, $exchange]);
 
-    // Проверка на существование результата.
+    // РџСЂРѕРІРµСЂРєР° РґРѕСЃС‚СѓРїРЅРѕСЃС‚Рё СЃРµСЂРІРёСЃР°.
     if (!$result)
     {
         http_response_code(503);
@@ -47,5 +47,4 @@ else
     http_response_code(405);
     return null;
 }
-
 ?>

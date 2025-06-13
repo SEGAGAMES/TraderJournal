@@ -1,8 +1,8 @@
 <?php
 // Обновление одного элемента в roles.
 
-include_once("../config/database.php")
-include_once("../config/helper.php")
+include_once("../config/database.php");
+include_once("../config/helper.php");
 header("Content-Type: application/json");
 
 $db = new Database();
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT')
     $query = "INSERT INTO roles `role`, `priority` VALUES (?,?) WHERE `role` = ?;";
     $result = $db->SendQuery($query, [$newRole, $priority, $role]);
 
-    // Проверка на существование результата.
+    // Проверка на доступность сервиса.
     if (!$result)
     {
         http_response_code(503);

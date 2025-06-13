@@ -1,7 +1,7 @@
 <?php
 // Считывание всех элементов из roles.
 
-include_once("../config/database.php")
+include_once("../config/database.php");
 header("Content-Type: application/json");
 
 $db = new Database();
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
     }
 
     $roles = [];
-    while ($row = $result->fetch(PDO::FETCH_ASSOC)
+    while ($row = $result->fetch(PDO::FETCH_ASSOC))
         $roles[] = $row;
 
     http_response_code(200);

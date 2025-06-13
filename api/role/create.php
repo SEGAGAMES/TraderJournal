@@ -1,8 +1,8 @@
 <?php
 // Создавние новой роли в roles.
 
-include_once("../config/database.php")
-include_once("../config/helper.php")
+include_once("../config/database.php");
+include_once("../config/helper.php");
 header("Content-Type: application/json");
 
 $db = new Database();

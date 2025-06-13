@@ -1,24 +1,52 @@
 <?php
-session_start();
-ini_set('display_errors', 0);
+// Обновление одного элемента в stocks.
 
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
+include_once("../config/database.php");
+include_once("../config/helper.php");
+header("Content-Type: application/json");
 
-include_once "../objects/stock.php";
+$db = new Database();
 
-if ($_SESSION['priority'] <= 4)
+// Проверка метода запроса.
+if ($_SERVER['REQUEST_METHOD'] === 'PUT')
 {
-	http_response_code(403);
-	die();
+    // Проверка на наличие пустых значений.
+    if (Helper::isNull($_PUT['ticker'], $_PUT['newticker'], $_PUT['userPriority'], $_PUT['futures'], $_PUT['exchange'], $_PUT['priority']))
+    {
+        http_response_code(400);
+        return null;
+    }
+
+    $ticker = $_PUT['ticker'];
+    $newticker = $_PUT['newticker'];
+    $futures = $_PUT['futures'];
+    $exchange = $_PUT['exchange'];
+    $priority = $_PUT['priority'];
+    $userPriority = $_PUT['userPriority'];
+
+    // Проверка прав пользователя.
+    if ($userPriority <= $priority)
+    {
+        http_response_code(403);
+        return null;
+    }
+
+    $query = "INSERT INTO stocks `ticker`, `exchange`, `futures` VALUES (?,?,?) WHERE `tocker` = ?;";
+    $result = $db->SendQuery($query, [$newticker, $$exchange, $futures, $ticker]);
+
+    // Проверка на доступность сервиса.
+    if (!$result)
+    {
+        http_response_code(503);
+        return null;
+    }
+    http_response_code(202);
+    return null;
+}
+else
+{
+    http_response_code(405);
+    return null;
 }
 
-$ticker = $_POST['ticker'] ?? null;
-$futures = $_POST['futures'] ?? null;
-$exchange = $_POST['exchange'] ?? null;
-
-if (Stock::Update($ticker, $futures, $exchange))
-    http_response_code(200);
-else
-    http_response_code(503);
 ?>

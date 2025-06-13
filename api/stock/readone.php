@@ -1,15 +1,15 @@
 <?php
-// Ñ÷èòûâàíèå îäíîãî ýëåìåíòà èç roles.
+// Ð¡Ñ‡Ð¸Ñ‚Ñ‹Ð²Ð°Ð½Ð¸Ðµ Ð¾Ð´Ð½Ð¾Ð³Ð¾ Ñ‚Ð¸ÐºÐµÑ€Ð° Ð¸Ð· stocks.
 
-include_once("../config/database.php")
+include_once("../config/database.php");
 header("Content-Type: application/json");
 
 $db = new Database();
 
-// Ïðîâåðêà ìåòîäà çàïðîñà.
+// ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð¼ÐµÑ‚Ð¾Ð´Ð°.
 if ($_SERVER['REQUEST_METHOD'] === 'GET')
 {
-    // Ïðîâåðêà ââåäåííûõ äàííûõ.
+    // ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð²Ð²ÐµÐ´ÐµÐ½Ð½Ñ‹Ñ… Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð¾Ð².
     if(!isset($_GET['ticker']))
     {
         http_response_code(400);
@@ -21,14 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
 
     $result = $db->SendQuery($query, [$ticker]);
 
-    // Ïðîâåðêà íà ñóùåñòâîâàíèå ðåçóëüòàòà.
+    // ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð½Ð° Ð´Ð¾ÑÑ‚ÑƒÐ¿Ð½Ð¾ÑÑ‚ÑŒ ÑÐµÑ€Ð²Ð¸ÑÐ°.
     if (!$result)
     {
         http_response_code(503);
         return null;
     }
     
-    // Ïðîâåðêà äëèíû îòâåòà.
+    // ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð½Ð° Ð½Ð°Ð»Ð¸Ñ‡Ð¸Ðµ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð°.
     if ($result->rowCount < 1)
     {
         http_response_code(404);

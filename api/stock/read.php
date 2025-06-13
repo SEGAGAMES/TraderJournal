@@ -1,26 +1,26 @@
 <?php
-// Ñ÷èòûâàíèå âñåõ ýëåìåíòîâ èç roles.
+// Ð¡Ñ‡Ð¸Ñ‚Ñ‹Ð²Ð°Ð½Ð¸Ðµ Ð²ÑÐµÑ… Ñ‚Ð¸ÐºÐµÑ€Ð¾Ð².
 
-include_once("../config/database.php")
+include_once("../config/database.php");
 header("Content-Type: application/json");
 
 $db = new Database();
 
-// Ïðîâåðêà ìåòîäà çàïðîñà.
+// ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð´Ð¾Ð¿ÑƒÑÑ‚Ð¸Ð¼Ð¾Ð³Ð¾ Ð¼ÐµÑ‚Ð¾Ð´Ð°.
 if ($_SERVER['REQUEST_METHOD'] === 'GET')
 {
     $query = "SELECT * FROM stocks";
 
     $result = $db->SendQuery($query);
 
-    // Ïðîâåðêà íà ñóùåñòâîâàíèå ðåçóëüòàòà.
+    // ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð½Ð° Ð´Ð¾ÑÑ‚ÑƒÐ¿Ð½Ð¾ÑÑ‚ÑŒ ÑÐµÑ€Ð²Ð¸ÑÐ°.
     if (!$result)
     {
         http_response_code(503);
         return null;
     }
     
-    // Ïðîâåðêà äëèíû îòâåòà.
+    // ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð½Ð° Ð¿Ñ€Ð¸ÑÑƒÑ‚ÑÑ‚Ð²Ð¸Ðµ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð°.
     if ($result->rowCount < 1)
     {
         http_response_code(404);
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
     }
 
     $tickers = [];
-    while ($row = $result->fetch(PDO::FETCH_ASSOC)
+    while ($row = $result->fetch(PDO::FETCH_ASSOC))
         $tickers[] = $row;
 
     http_response_code(200);

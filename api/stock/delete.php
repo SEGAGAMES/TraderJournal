@@ -1,21 +1,48 @@
 <?php
-session_start();
-ini_set('display_errors', 0);
+// Удаление элемента в stocks.
 
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
+include_once("../config/database.php");
+header("Content-Type: application/json");
 
-include_once "../objects/stock.php";
+$db = new Database();
 
-if ($_SESSION['priority'] <= 4)
+// Проверка метода запроса.
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
 {
-	http_response_code(403);
-	die();
+    // Проверка на наличие пустых значений.
+    if (Helper::isNull($_DELETE['ticker'], $_DELETE['userPriority'], $_DELETE['priority']))
+    {
+        http_response_code(400);
+        return null;
+    }
+
+    $ticker = $_DELETE['ticker'];
+    $userPriority = $_DELETE['userPriority'];
+    $priority = $_DELETE['priority'];
+
+    // Проверка прав пользователя.
+    if ($userPriority <= $priority)
+    {
+        http_response_code(403);
+        return null;
+    }
+
+    $query = "DELETE FROM stocks WHERE `tocker` = ?;";
+    $result = $db->SendQuery($query, [$ticker]);
+
+    // Проверка на существование результата.
+    if (!$result)
+    {
+        http_response_code(503);
+        return null;
+    }
+    http_response_code(202);
+    return null;
+}
+else
+{
+    http_response_code(405);
+    return null;
 }
 
-$ticker = $_GET['ticker'] ?? null;
-if (Stock::Delete($ticker)->rowCount() > 0) 
-    http_response_code(200);
-else 
-    http_response_code(404);
 ?>

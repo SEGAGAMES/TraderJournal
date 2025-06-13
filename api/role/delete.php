@@ -1,7 +1,7 @@
 <?php
 // Удаление элемента в roles.
 
-include_once("../config/database.php")
+include_once("../config/database.php");
 header("Content-Type: application/json");
 
 $db = new Database();
