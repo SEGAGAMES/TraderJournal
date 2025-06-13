@@ -1,29 +1,43 @@
 <?php
-ini_set('display_errors', 0);
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
+// Считывание всех пользователей.
 
-include_once "../objects/user.php";
+include_once("../config/database.php");
+header("Content-Type: application/json");
 
-$stmt = User::Read();
-$num = $stmt->rowCount();
+$db = new Database();
 
-if ($num > 0)
+// Проверка допустимого метода.
+if ($_SERVER['REQUEST_METHOD'] === 'GET')
 {
-    $users_arr = array();
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+    $query = "SELECT * FROM users";
+
+    $result = $db->SendQuery($query);
+
+    // Проверка на доступность сервиса.
+    if (!$result)
     {
-        extract($row);
-        $user_item = array(
-            "username" => $username,
-            "password" => $password,
-            "role" => $role,
-        );
-        array_push($users_arr, $user_item);
+        http_response_code(503);
+        return null;
     }
+    
+    // Проверка на присутствие результата.
+    if ($result->rowCount < 1)
+    {
+        http_response_code(404);
+        return null;
+    }
+
+    $users = [];
+    while ($row = $result->fetch(PDO::FETCH_ASSOC))
+        $users[] = $row;
+
     http_response_code(200);
-    echo json_encode($users_arr);
+    return json_encode($users);
 }
 else
-    http_response_code(404);
+{
+    http_response_code(405);
+    return null;
+}
+
 ?>

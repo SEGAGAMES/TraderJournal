@@ -11,7 +11,7 @@ $db = new Database();
 if ($_SERVER['REQUEST_METHOD'] === 'PUT')
 {
     // Проверка на наличие пустых значений.
-    if (Helper::isNull($_PUT['ticker'], $_PUT['newticker'], $_PUT['userPriority'], $_PUT['futures'], $_PUT['exchange'], $_PUT['priority']))
+    if (Helper::isNoOneNull($_PUT['ticker'], $_PUT['newticker'], $_PUT['userPriority'], $_PUT['futures'], $_PUT['exchange'], $_PUT['priority']))
     {
         http_response_code(400);
         return null;
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT')
         return null;
     }
 
-    $query = "INSERT INTO stocks `ticker`, `exchange`, `futures` VALUES (?,?,?) WHERE `tocker` = ?;";
+    $query = "INSERT INTO stocks `ticker`, `exchange`, `futures` VALUES (?,?,?) WHERE `ticker` = ?;";
     $result = $db->SendQuery($query, [$newticker, $$exchange, $futures, $ticker]);
 
     // Проверка на доступность сервиса.

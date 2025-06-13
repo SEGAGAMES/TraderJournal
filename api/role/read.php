@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
         $roles[] = $row;
 
     http_response_code(200);
-    echo json_encode($roles);
+    return json_encode($roles);
 }
 else
 {

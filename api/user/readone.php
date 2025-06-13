@@ -1,31 +1,48 @@
 <?php
-ini_set('display_errors', 0);
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
+// Считывание одного тикера из users.
 
-include_once "../objects/user.php";
+include_once("../config/database.php");
+header("Content-Type: application/json");
 
-$username = isset($_GET["username"]) ? $_GET["username"] : null;
+$db = new Database();
 
-$stmt = User::ReadOne($username);
-$num = $stmt->rowCount();
-
-if ($num > 0)
+// Проверка метода.
+if ($_SERVER['REQUEST_METHOD'] === 'GET')
 {
-    $users_arr = array();
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+    // Проверка введенных параметров.
+    if(!isset($_GET['ticker']))
     {
-        extract($row);
-        $user_item = array(
-            "username" => $username,
-            "password" => $password,
-            "role" => $role,
-        );
-        array_push($users_arr, $user_item);
+        http_response_code(400);
+        return null;
     }
+
+    $login = $_GET['login'];
+    $query = "SELECT * FROM users WHERE login = ?";
+
+    $result = $db->SendQuery($query, [$login]);
+
+    // Проверка на доступность сервиса.
+    if (!$result)
+    {
+        http_response_code(503);
+        return null;
+    }
+    
+    // Проверка на наличие результата.
+    if ($result->rowCount < 1)
+    {
+        http_response_code(404);
+        return null;
+    }
+
+    $result = $result->fetch(PDO::FETCH_ASSOC);
+
     http_response_code(200);
-    echo json_encode($users_arr);
+    return json_encode($result);
 }
-else 
-    http_response_code(404);
+else
+{
+    http_response_code(405);
+    return null;
+}
 ?>

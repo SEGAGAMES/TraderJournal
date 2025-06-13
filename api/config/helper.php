@@ -1,9 +1,9 @@
 <?php
 
-// Вспомогательный класс для удобной обработки данных.
+// Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ РєР»Р°СЃСЃ РѕР±СЂР°Р±РѕС‚РєРё РґР°РЅРЅС‹С….
 class Helper
 {
-    // Проверяет наличие пустых элементов в массиве.
+    // РџСЂРѕРІРµСЂРєР° С‡С‚Рѕ РІСЃРµ СЌР»РµРјРµРЅС‚С‹ РЅРµ РЅСѓР»РµРІС‹Рµ.
     static public function isNull(array $forCheckArray)
     {
         foreach ($forCheckArray as $item)
@@ -12,7 +12,7 @@ class Helper
         return false;
     }
 
-    //Проверяет наличие не пустого элемента в массиве.
+    // РџСЂРѕРІРµСЂРєР° РЅР° РЅР°Р»РёС‡РёРµ РЅРµ РЅСѓР»РµРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р°.
     static public function isNoOneNull(array $forCheckArray)
     {
         foreach ($forCheckArray as $item)

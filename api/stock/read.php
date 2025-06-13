@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
         $tickers[] = $row;
 
     http_response_code(200);
-    echo json_encode($tickers);
+    return json_encode($tickers);
 }
 else
 {

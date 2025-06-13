@@ -42,7 +42,7 @@ class Database
         try 
         {
             $stmt = $this->conn->prepare($query);
-            for ($i = 0; $i < count($paramsArray); i++)
+            for ($i = 0; $i < count($paramsArray); $i++)
                 $stmt->bind_param($i, $paramsArray[$i]);
             $stmt->execute();
             return $stmt;

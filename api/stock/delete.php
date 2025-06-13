@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
         return null;
     }
 
-    $query = "DELETE FROM stocks WHERE `tocker` = ?;";
+    $query = "DELETE FROM stocks WHERE `ticker` = ?;";
     $result = $db->SendQuery($query, [$ticker]);
 
     // Проверка на существование результата.
