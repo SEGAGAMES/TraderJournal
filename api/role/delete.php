@@ -14,7 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
     if (Helper::isNull($_DELETE['role']))
     {
         http_response_code(400);
-        return null;
+        echo null;
+        die();
     }
 
     $role = $_DELETE['role'];
@@ -23,7 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
     if ($_SESSION['priority'] <= 6)
     {
         http_response_code(403);
-        return null;
+        echo null;
+        die();
     }
 
     $query = "DELETE FROM roles WHERE `role` = ?;";
@@ -33,15 +35,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
     if (!$result)
     {
         http_response_code(503);
-        return null;
+        echo null;
     }
     http_response_code(202);
-    return null;
+    echo null;
+    die();
 }
 else
 {
     http_response_code(405);
-    return null;
+    echo null;
+    die();
 }
 
 ?>

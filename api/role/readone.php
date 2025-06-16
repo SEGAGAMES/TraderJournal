@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
     if(!isset($_GET['role']))
     {
         http_response_code(400);
-        return null;
+        echo null;
     }
 
     $role = $_GET['role'];
@@ -25,25 +25,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
     if (!$result)
     {
         http_response_code(503);
-        return null;
+        echo null;
+        die();
     }
     
     // Проверка длины ответа.
     if ($result->rowCount < 1)
     {
         http_response_code(404);
-        return null;
+        echo null;
+        die();
     }
 
     $result = $result->fetch(PDO::FETCH_ASSOC);
 
     http_response_code(200);
-    return json_encode($result);
+    echo json_encode($result);
+    die();
 }
 else
 {
     http_response_code(405);
-    return null;
+    echo null;
+    die();
 }
 
 ?>

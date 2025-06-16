@@ -16,7 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT')
     if (Helper::isNoOneNull($_PUT['newRole'], $_PUT['role'], $_PUT['priority']))
     {
         http_response_code(400);
-        return null;
+        echo null;
+        die();
     }
 
     $newRole = $_PUT['newRole'];
@@ -27,7 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT')
     if ($_SESSION['priority'] <= 6)
     {
         http_response_code(403);
-        return null;
+        echo null;
+        die();
     }
 
     $query = "INSERT INTO roles `role`, `priority` VALUES (?,?) WHERE `role` = ?;";
@@ -37,15 +39,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT')
     if (!$result)
     {
         http_response_code(503);
-        return null;
+        echo null;
+        die();
     }
     http_response_code(202);
-    return null;
+    echo null;
+    die();
 }
 else
 {
     http_response_code(405);
-    return null;
+    echo null;
+    die();
 }
 
 ?>

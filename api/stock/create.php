@@ -16,7 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     if (Helper::isNull($_POST['ticker'], $_POST['futures'], $_POST['exchange']))
     {
         http_response_code(400);
-        return null;
+        echo null;
+        die();
     }
 
     $ticker = $_POST['ticker'];
@@ -27,7 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     if ($_SESSION['priority'] <= 4)
     {
         http_response_code(403);
-        return null;
+        echo null;
+        die();
     }
 
     $query = "INSERT INTO stocks `ticker`, `futures`, `exchange` VALUES (?,?,?);";
@@ -37,14 +39,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     if (!$result)
     {
         http_response_code(503);
-        return null;
+        echo null;
+        die();
     }
     http_response_code(201);
-    return null;
+    echo null;
+    die();
 }
 else
 {
     http_response_code(405);
-    return null;
+    echo null;
+    die();
 }
 ?>

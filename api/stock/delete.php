@@ -14,7 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
     if (Helper::isNull($_DELETE['ticker']))
     {
         http_response_code(400);
-        return null;
+        echo null;
+        die();
     }
 
     $ticker = $_DELETE['ticker'];
@@ -23,7 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
     if ($_SESSION['priority'] <= 4)
     {
         http_response_code(403);
-        return null;
+        echo null;
+        die();
     }
 
     $query = "DELETE FROM stocks WHERE `ticker` = ?;";
@@ -33,15 +35,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
     if (!$result)
     {
         http_response_code(503);
-        return null;
+        echo null;
+        die();
     }
     http_response_code(202);
-    return null;
+    echo null;
+    die();
 }
 else
 {
     http_response_code(405);
-    return null;
+    echo null;
+    die();
 }
 
 ?>

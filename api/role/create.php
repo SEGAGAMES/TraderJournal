@@ -12,10 +12,11 @@ $db = new Database();
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
     // Проверка на наличие пустых значений.
-    if (Helper::isNull($_POST['role'], $_POST['priority']))
+    if (Helper::isNull([$_POST['role'], $_POST['priority']]))
     {
         http_response_code(400);
-        return null;
+        echo null;
+        die();
     }
 
     $role = $_POST['role'];
@@ -25,7 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     if ($_SESSION['priority'] <= 6)
     {
         http_response_code(403);
-        return null;
+        echo null;
+        die();
     }
 
     $query = "INSERT INTO roles `role`, `priority` VALUES (?,?);";
@@ -35,15 +37,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     if (!$result)
     {
         http_response_code(503);
-        return null;
+        echo null;
+        die();
     }
     http_response_code(201);
-    return null;
+    echo null;
+    die();
 }
 else
 {
     http_response_code(405);
-    return null;
+    echo null;
+    die();
 }
 
 ?>

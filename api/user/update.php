@@ -15,7 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT')
     if (Helper::isnoOneNull($_PUT['newlogin'],$_PUT['login'], $_PUT['password'], $_PUT['role'], $_PUT['surname'], $_PUT['name'], $_PUT['lastname'], $_PUT['email']))
     {
         http_response_code(400);
-        return null;
+        echo null;
+        die();
     }
     $newlogin = $_PUT['newlogin'];
     $login = $_PUT['login'];
@@ -30,7 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT')
     if ($_SESSION['priority'] <= 8)
     {
         http_response_code(403);
-        return null;
+        echo null;
+        die();
     }
 
     $query = "INSERT INTO users `login`, `password`, `role`, `surname`, `name`, `lastname`, `email` VALUES (?,?,?,?,?,?,?) WHERE `login` = ?;";
@@ -40,15 +42,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT')
     if (!$result)
     {
         http_response_code(503);
-        return null;
+        echo null;
+        die();
     }
     http_response_code(202);
-    return null;
+    echo null;
+    die();
 }
 else
 {
     http_response_code(405);
-    return null;
+    echo null;
+    die();
 }
 
 ?>

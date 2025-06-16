@@ -17,14 +17,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
     if (!$result)
     {
         http_response_code(503);
-        return null;
+        echo null;
+        die();
     }
     
     // Проверка длины ответа.
-    if ($result->rowCount < 1)
+    if ($result->rowCount() < 1)
     {
         http_response_code(404);
-        return null;
+        echo null;
+        die();
     }
 
     $roles = [];
@@ -32,12 +34,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
         $roles[] = $row;
 
     http_response_code(200);
-    return json_encode($roles);
+    echo json_encode($roles);
+    die();
 }
 else
 {
     http_response_code(405);
-    return null;
+    echo null;
+    die();
 }
 
 ?>

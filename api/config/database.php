@@ -11,7 +11,7 @@ class Database
     private $host = "localhost";
 
     // Название базы данных.
-    private $db_name = "trades";
+    private $db_name = "tradingjournal";
 
     // Имя пользования для подключения.
     private $username = "root";
@@ -43,7 +43,7 @@ class Database
         {
             $stmt = $this->conn->prepare($query);
             for ($i = 0; $i < count($paramsArray); $i++)
-                $stmt->bind_param($i, $paramsArray[$i]);
+                $stmt->bind_param($i+1, $paramsArray[$i]);
             $stmt->execute();
             return $stmt;
         }

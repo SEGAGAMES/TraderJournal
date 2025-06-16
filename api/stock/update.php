@@ -15,7 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT')
     if (Helper::isNoOneNull($_PUT['ticker'], $_PUT['newticker'], $_PUT['futures'], $_PUT['exchange']))
     {
         http_response_code(400);
-        return null;
+        echo null;
+        die();
     }
 
     $ticker = $_PUT['ticker'];
@@ -27,7 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT')
     if ($_SESSION['priority'] <= 4)
     {
         http_response_code(403);
-        return null;
+        echo null;
+        die();
     }
 
     $query = "INSERT INTO stocks `ticker`, `exchange`, `futures` VALUES (?,?,?) WHERE `ticker` = ?;";
@@ -37,15 +39,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT')
     if (!$result)
     {
         http_response_code(503);
-        return null;
+        echo null;
+        die();
     }
     http_response_code(202);
-    return null;
+    echo null;
+    die();
 }
 else
 {
     http_response_code(405);
-    return null;
+    echo null;
+    die();
 }
 
 ?>
