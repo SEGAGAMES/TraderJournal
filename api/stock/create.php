@@ -1,6 +1,8 @@
 <?php
 // Создание нового тикера в stocks.
 
+session_start();
+
 include_once("../config/database.php");
 include_once("../config/helper.php");
 header("Content-Type: application/json");
@@ -11,20 +13,18 @@ $db = new Database();
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
     // Проверка введенных параметров.
-    if (Helper::isNull($_POST['userPriority'], $_POST['priority'], $_POST['ticker'], $_POST['futures'], $_POST['exchange']))
+    if (Helper::isNull($_POST['ticker'], $_POST['futures'], $_POST['exchange']))
     {
         http_response_code(400);
         return null;
     }
 
-    $userPriority = $_POST['userPriority'];
-    $priority = $_POST['priority'];
     $ticker = $_POST['ticker'];
     $futures = $_POST['futures'];
     $exchange = $_POST['exchange'];
 
     // Проверка прав доступа.
-    if ($userPriority <= $priority)
+    if ($_SESSION['priority'] <= 4)
     {
         http_response_code(403);
         return null;

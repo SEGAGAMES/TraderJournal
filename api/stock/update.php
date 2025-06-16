@@ -1,5 +1,6 @@
 <?php
 // Обновление одного элемента в stocks.
+session_start();
 
 include_once("../config/database.php");
 include_once("../config/helper.php");
@@ -11,7 +12,7 @@ $db = new Database();
 if ($_SERVER['REQUEST_METHOD'] === 'PUT')
 {
     // Проверка на наличие пустых значений.
-    if (Helper::isNoOneNull($_PUT['ticker'], $_PUT['newticker'], $_PUT['userPriority'], $_PUT['futures'], $_PUT['exchange'], $_PUT['priority']))
+    if (Helper::isNoOneNull($_PUT['ticker'], $_PUT['newticker'], $_PUT['futures'], $_PUT['exchange']))
     {
         http_response_code(400);
         return null;
@@ -21,11 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT')
     $newticker = $_PUT['newticker'];
     $futures = $_PUT['futures'];
     $exchange = $_PUT['exchange'];
-    $priority = $_PUT['priority'];
-    $userPriority = $_PUT['userPriority'];
 
     // Проверка прав пользователя.
-    if ($userPriority <= $priority)
+    if ($_SESSION['priority'] <= 4)
     {
         http_response_code(403);
         return null;

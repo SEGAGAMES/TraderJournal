@@ -1,5 +1,6 @@
 <?php
 // Обновление одного элемента в users.
+session_start();
 
 include_once("../config/database.php");
 include_once("../config/helper.php");
@@ -11,7 +12,7 @@ $db = new Database();
 if ($_SERVER['REQUEST_METHOD'] === 'PUT')
 {
     // Проверка на наличие пустых значений.
-    if (Helper::isnoOneNull($_PUT['newlogin'],$_PUT['login'], $_PUT['password'], $_PUT['role'], $_PUT['surname'], $_PUT['name'], $_PUT['lastname'], $_PUT['email'], $_PUT['priority'], $_PUT['userPriority']))
+    if (Helper::isnoOneNull($_PUT['newlogin'],$_PUT['login'], $_PUT['password'], $_PUT['role'], $_PUT['surname'], $_PUT['name'], $_PUT['lastname'], $_PUT['email']))
     {
         http_response_code(400);
         return null;
@@ -24,18 +25,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT')
     $name = $_PUT['name'];
     $lastname = $_PUT['lastname'];
     $email = $_PUT['email'];
-    $priority = $_PUT['priority'];
-    $userPriority = $_PUT['userPriority'];
 
     // Проверка прав пользователя.
-    if ($userPriority <= $priority)
+    if ($_SESSION['priority'] <= 8)
     {
         http_response_code(403);
         return null;
     }
 
     $query = "INSERT INTO users `login`, `password`, `role`, `surname`, `name`, `lastname`, `email` VALUES (?,?,?,?,?,?,?) WHERE `login` = ?;";
-    $result = $db->SendQuery($query, [$login, $password, $role, $surname, $name, $lastname, $email, $newlogin]);
+    $result = $db->SendQuery($query, [$newlogin, $password, $role, $surname, $name, $lastname, $email, $login]);
 
     // Проверка на доступность сервиса.
     if (!$result)

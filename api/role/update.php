@@ -1,6 +1,8 @@
 <?php
 // Обновление одного элемента в roles.
 
+session_start();
+
 include_once("../config/database.php");
 include_once("../config/helper.php");
 header("Content-Type: application/json");
@@ -11,7 +13,7 @@ $db = new Database();
 if ($_SERVER['REQUEST_METHOD'] === 'PUT')
 {
     // Проверка на наличие пустых значений.
-    if (Helper::isNoOneNull($_PUT['newRole'], $_PUT['userPriority'], $_PUT['role'], $_PUT['priority']))
+    if (Helper::isNoOneNull($_PUT['newRole'], $_PUT['role'], $_PUT['priority']))
     {
         http_response_code(400);
         return null;
@@ -20,10 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT')
     $newRole = $_PUT['newRole'];
     $role = $_PUT['role'];
     $priority = $_PUT['priority'];
-    $userPriority = $_PUT['userPriority'];
 
     // Проверка прав пользователя.
-    if ($userPriority <= $priority)
+    if ($_SESSION['priority'] <= 6)
     {
         http_response_code(403);
         return null;

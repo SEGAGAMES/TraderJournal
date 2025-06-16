@@ -1,5 +1,6 @@
 <?php
 // Удаление элемента в roles.
+session_start();
 
 include_once("../config/database.php");
 header("Content-Type: application/json");
@@ -10,18 +11,16 @@ $db = new Database();
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE')
 {
     // Проверка на наличие пустых значений.
-    if (Helper::isNull($_DELETE['role'], $_DELETE['userPriority'], $_DELETE['priority']))
+    if (Helper::isNull($_DELETE['role']))
     {
         http_response_code(400);
         return null;
     }
 
     $role = $_DELETE['role'];
-    $userPriority = $_DELETE['userPriority'];
-    $priority = $_DELETE['priority'];
 
     // Проверка прав пользователя.
-    if ($userPriority <= $priority)
+    if ($_SESSION['priority'] <= 6)
     {
         http_response_code(403);
         return null;

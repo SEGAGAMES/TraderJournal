@@ -1,5 +1,6 @@
 <?php
 // Создавние новой роли в roles.
+session_start();
 
 include_once("../config/database.php");
 include_once("../config/helper.php");
@@ -11,18 +12,17 @@ $db = new Database();
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
     // Проверка на наличие пустых значений.
-    if (Helper::isNull($_POST['userPriority'], $_POST['role'], $_POST['priority']))
+    if (Helper::isNull($_POST['role'], $_POST['priority']))
     {
         http_response_code(400);
         return null;
     }
 
-    $userPriority = $_POST['userPriority'];
     $role = $_POST['role'];
     $priority = $_POST['priority'];
 
     // Проверка прав пользователя.
-    if ($userPriority <= $priority)
+    if ($_SESSION['priority'] <= 6)
     {
         http_response_code(403);
         return null;
