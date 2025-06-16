@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET')
     }
     
     // Проверка на присутствие результата.
-    if ($result->rowCount < 1)
+    if ($result->rowCount() < 1)
     {
         http_response_code(404);
         echo null;
